@@ -6,10 +6,15 @@ liveDraw.Point = function ( parent, position, color, isFirst ) {
   this.parent = parent;
 
   this.node = document.createElementNS( liveDraw.SVGNS, 'circle' );
-  this.node.setAttribute( 'r', 10 );
+  this.node.setAttribute( 'r', 18 );
   this.node.style.fill = color;
   this.node.setAttribute( 'class', 'controlPoint' );
   this.parent.pointsNode.appendChild( this.node );
+
+  this.touchNode = document.createElementNS( liveDraw.SVGNS, 'circle' );
+  this.touchNode.setAttribute( 'r', 40 );
+  this.touchNode.setAttribute( 'class', 'touchPoint' );
+  this.parent.pointsNode.appendChild( this.touchNode );
 
   this.aText = document.createElementNS( liveDraw.SVGNS, 'text' );
   if (isFirst) {
@@ -44,7 +49,7 @@ liveDraw.Point = function ( parent, position, color, isFirst ) {
     vector0: new Vector2(),
     vectorT: new Vector2()
   };
-  handleSettings.domNode = this.node;
+  handleSettings.domNode = this.touchNode;
   var myHandle = new Handle( handleSettings );
 }
 
@@ -55,8 +60,10 @@ liveDraw.Point.prototype = {
     var y = this.position.y;
     this.node.setAttribute( 'cx', x );
     this.node.setAttribute( 'cy', y );
-    this.aText.setAttribute( 'x', x - 5 );
-    this.aText.setAttribute( 'y', y + 5 );
+    this.touchNode.setAttribute( 'cx', x );
+    this.touchNode.setAttribute( 'cy', y );
+    this.aText.setAttribute( 'x', x - 9 );
+    this.aText.setAttribute( 'y', y + 9 );
   }
 };
 
@@ -120,8 +127,8 @@ liveDraw.Application = function ( container ) {
 	this.node.setAttribute( 'xmlns:xlink', liveDraw.XLink );
 	container.appendChild( this.node );
 
-  var width = 800;
-  var height = 600;
+  var width = 1366;
+  var height = 1024;
   this.node.style.width  = width + 'px';
   this.node.style.height = height + 'px';
   this.node.setAttribute( 'viewBox', 0 + ',' + 0 + ',' + width + ',' + height );
@@ -129,14 +136,14 @@ liveDraw.Application = function ( container ) {
   var nextButton = document.createElementNS( liveDraw.SVGNS, 'rect' );
   nextButton.setAttribute( 'x', 10 );
   nextButton.setAttribute( 'y', 10 );
-  nextButton.setAttribute( 'width', 160 );
-  nextButton.setAttribute( 'height', 30 );
+  nextButton.setAttribute( 'width', 280 );
+  nextButton.setAttribute( 'height', 50 );
   nextButton.setAttribute( 'class', 'button' );
   this.node.appendChild( nextButton );
 
   var nextButtonText = document.createElementNS( liveDraw.SVGNS, 'text' );
   nextButtonText.setAttribute( 'x', 30 );
-  nextButtonText.setAttribute( 'y', 30 );
+  nextButtonText.setAttribute( 'y', 45 );
   nextButtonText.setAttribute( 'class', 'buttonText' );
   nextButtonText.textContent = 'Start New Line';
   this.node.appendChild( nextButtonText );
