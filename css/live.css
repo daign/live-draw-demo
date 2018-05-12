@@ -1,0 +1,39 @@
+body {
+	font-family: sans-serif;
+	background: #ddd;
+	overflow: hidden;
+}
+
+.container {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+}
+
+.context {
+	background: #fff;
+}
+
+.button {
+	fill: #ccc;
+	stroke: #666;
+	stroke-width: 3;
+}
+
+.buttonText {
+	fill: #000;
+	pointer-events: none;
+}
+
+.controlPoint {
+}
+
+.aText {
+	fill: #fff;
+	pointer-events: none;
+}
+
+.controlLine {
+	fill: none;
+	stroke-width: 5;
+}
