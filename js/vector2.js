@@ -27,11 +27,15 @@ Vector2.prototype = {
 
 	setFromEvent: function ( event ) {
 
-		var x = ( event.clientX !== undefined ) ? event.clientX : ( event.touches && event.touches[ 0 ].clientX );
-		var y = ( event.clientY !== undefined ) ? event.clientY : ( event.touches && event.touches[ 0 ].clientY );
-		this.set( x, y );
-		return this;
-
+		if (event.clientX !== undefined && event.clientY !== undefined) {
+			this.set(event.clientX, event.clientY);
+			return this;
+		} else if (event.touches && event.touches[0] && event.touches[0].clientX && event.touches[0].clientY) {
+			this.set(event.touches[0].clientX, event.touches[0].clientY);
+			return this;
+		} else {
+			return this;
+		}
 	},
 
 	copy: function ( v ) {

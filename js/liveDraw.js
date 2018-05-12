@@ -2,7 +2,7 @@ liveDraw = {};
 liveDraw.SVGNS = 'http://www.w3.org/2000/svg';
 liveDraw.XLink = 'http://www.w3.org/1999/xlink';
 
-liveDraw.Point = function ( parent, x, y, color, isFirst ) {
+liveDraw.Point = function ( parent, position, color, isFirst ) {
   this.parent = parent;
 
   this.node = document.createElementNS( liveDraw.SVGNS, 'circle' );
@@ -18,7 +18,7 @@ liveDraw.Point = function ( parent, x, y, color, isFirst ) {
     this.parent.pointsNode.appendChild( this.aText );
   }
 
-  this.position = new Vector2( x, y );
+  this.position = position.clone();
 
   var self = this;
   var snapshot = undefined;
@@ -87,9 +87,9 @@ liveDraw.Wire = function ( parent, color) {
 
 liveDraw.Wire.prototype = {
 	constructor: liveDraw.Wire,
-  addPoint: function ( x, y ) {
+  addPoint: function ( position ) {
     var isFirst = this.points.length === 0;
-    var point = new liveDraw.Point( this, x, y, this.color, isFirst );
+    var point = new liveDraw.Point( this, position, this.color, isFirst );
     this.points.push( point );
   },
   updateLines: function () {
@@ -152,7 +152,9 @@ liveDraw.Application = function ( container ) {
   nextButton.addEventListener( 'touchstart', onNextButton, false );
 
   var onMouseDown = function ( event ) {
-    self.addPoint( event.clientX, event.clientY );
+    var position = new Vector2();
+    position.setFromEvent( event );
+    self.addPoint( position );
 		self.update();
     event.stopPropagation();
     event.preventDefault();
@@ -168,13 +170,13 @@ liveDraw.Application.prototype = {
 			wire.updateLines();
 		} );
   },
-  addPoint: function ( x, y ) {
+  addPoint: function ( position ) {
     if (this.activeWire === null) {
       var wire = new liveDraw.Wire( this, this.colors[this.colorIndex] );
       this.colorIndex = (this.colorIndex + 1) % 5;
       this.wires.push( wire );
       this.activeWire = wire;
     }
-    this.activeWire.addPoint( x, y );
+    this.activeWire.addPoint( position );
   }
 };
